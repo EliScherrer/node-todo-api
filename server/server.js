@@ -107,7 +107,7 @@ app.patch('/todos/:id', (req, res) => {
 
 	}).catch((err) => {
 		res.status(400).send();
-	})
+	});
 });
 
 app.post('/users', (req, res) => {
@@ -115,12 +115,13 @@ app.post('/users', (req, res) => {
 	var user = new User(body);
 
 	user.save()
-		.then((user) => {
-			res.send(user);
+		.then(() => {
+			return user.generateAuthToken();
+		}).then((token) => {
+			res.header('x-auth', token).send(user);
 		}).catch((err) => {
 			res.status(400).send(err);
-		})
-
+		});
 });
 
 
