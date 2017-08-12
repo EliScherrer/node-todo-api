@@ -223,8 +223,6 @@ describe('POST /users', () => {
 			});
 	});
 
-	//send invalid email and password
-	//expect 400
 	it('should return validation errors if request invalid', (done) => {
 		request(app)
 			.post('/users')
@@ -236,8 +234,6 @@ describe('POST /users', () => {
 			.end(done);
 	});
 
-	//use an email created in seed data
-	//expect 400
 	it('should not create user if email in use', (done) => {
 		request(app)
 			.post('/users')
