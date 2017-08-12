@@ -51,7 +51,7 @@ describe('POST /todos', () => {
 	});
 });
 
-describe('Get /todos', () => {
+describe('GET /todos', () => {
 	it('should get all todos', (done) => {
 		request(app)
 			.get('/todos')
@@ -63,7 +63,7 @@ describe('Get /todos', () => {
 	});
 });
 
-describe('Get /todos/:id', () => {
+describe('GET /todos/:id', () => {
 	it('should return todo doc', (done) => {
 		request(app)
 			.get(`/todos/${todos[0]._id.toHexString()}`)
@@ -167,7 +167,7 @@ describe('PATCH /todos/:id', () => {
 	});
 });
 
-describe('Get /users/me', () => {
+	describe('GET /users/me', () => {
 	it('should return user if authenticated', (done) => {
 		request(app)
 			.get('/users/me')
@@ -288,6 +288,30 @@ describe('POST /users/login', () => {
 				}
 
 				User.findById(users[1]._id)
+					.then((user) => {
+						expect(user.tokens.length).toEqual(0);
+						done();
+					}).catch((err) => done(err));
+			});
+	});
+});
+
+describe('DELETE /users/me/token', () => {
+	it('should remove auth token on logout' , (done) => {
+		// make delete request
+		//set x-auth = to token in tokens array
+		//expect 200
+		//then find user and make sure tokens array has a length of 0
+		request(app)
+			.delete('/users/me/token')
+			.set('x-auth', users[0].tokens[0].token)
+			.expect(200)
+			.end((err, res) => {
+				if (err) {
+					return done(err)
+				}
+
+				User.findById(users[0]._id)
 					.then((user) => {
 						expect(user.tokens.length).toEqual(0);
 						done();
