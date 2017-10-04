@@ -1,2 +1,2 @@
 # node-todo-api
-basic api for a todo application
+basic rest api for an online todo application
